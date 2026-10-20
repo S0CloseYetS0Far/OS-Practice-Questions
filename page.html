@@ -1,0 +1,613 @@
+<title>CS222 Question Bank</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: one centered study column (~46rem). Home = chapter grid; practice = one question sheet + frame strip + nav bar. */
+:root {
+  --paper: #f2f4f8;
+  --sheet: #ffffff;
+  --ink: #131a2b;
+  --muted: #55627a;
+  --rule: #d8dee9;
+  --accent: #0b6e86;
+  --accent-ink: #ffffff;
+  --accent-soft: #e2f1f5;
+  --mark: #ffe680;
+  --mark-ink: #2d2600;
+  --ok: #157a3b;
+  --ok-soft: #e4f5ea;
+  --bad: #b3261e;
+  --bad-soft: #fcebea;
+  --frame: #e6eaf1;
+  --shadow: 0 1px 2px rgba(19, 26, 43, .06), 0 6px 24px rgba(19, 26, 43, .06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0e131c; --sheet: #151c28; --ink: #e5eaf3; --muted: #9aa6bc; --rule: #283245;
+    --accent: #5cc4d9; --accent-ink: #06222a; --accent-soft: #12303a;
+    --mark: #5a4c0e; --mark-ink: #fff3c4;
+    --ok: #58d17f; --ok-soft: #10291b; --bad: #ff8a80; --bad-soft: #2f1615; --frame: #222b3b;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 24px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0e131c; --sheet: #151c28; --ink: #e5eaf3; --muted: #9aa6bc; --rule: #283245;
+  --accent: #5cc4d9; --accent-ink: #06222a; --accent-soft: #12303a;
+  --mark: #5a4c0e; --mark-ink: #fff3c4;
+  --ok: #58d17f; --ok-soft: #10291b; --bad: #ff8a80; --bad-soft: #2f1615; --frame: #222b3b;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 24px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font: 400 1rem/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 5rem;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 46rem; margin: 0 auto; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; letter-spacing: -0.01em; margin: 0; }
+.mono { font-family: var(--f-mono); }
+.label { font: 500 .72rem/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- top bar ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding: .7rem max(16px, env(safe-area-inset-left, 0px));
+}
+.top .wrap { display: flex; align-items: center; gap: .75rem; }
+.brand { display: flex; align-items: baseline; gap: .55rem; min-width: 0; background: none; border: 0; padding: 0; }
+.brand b { font: 700 1.15rem/1 var(--f-display); }
+.brand span { font: 500 .75rem/1 var(--f-mono); color: var(--muted); white-space: nowrap; }
+.top .spacer { flex: 1; }
+.iconbtn {
+  border: 1px solid var(--rule); background: var(--sheet); border-radius: 999px;
+  padding: .35rem .75rem; font-size: .85rem; display: inline-flex; align-items: center; gap: .4rem;
+}
+.iconbtn:hover { border-color: var(--accent); }
+
+/* ---------- home ---------- */
+.hero { padding-block: 2.2rem 1.4rem; display: grid; gap: .8rem; }
+.hero h1 { font-size: clamp(1.9rem, 5vw, 2.6rem); line-height: 1.08; }
+.hero p { margin: 0; color: var(--muted); max-width: 38rem; }
+.stats { display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; font: 500 .85rem/1.4 var(--f-mono); color: var(--muted); }
+.stats b { color: var(--ink); font-weight: 600; }
+
+.controls {
+  display: grid; gap: .9rem; padding: 1rem 1.1rem; margin-bottom: 1.4rem;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px;
+}
+.ctl-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .6rem; }
+.ctl-row > .label { width: 7.2rem; flex: none; }
+.chip {
+  border: 1px solid var(--rule); background: transparent; border-radius: 999px;
+  padding: .3rem .8rem; font-size: .88rem;
+}
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.switch { display: inline-flex; align-items: center; gap: .55rem; font-size: .92rem; background: none; border: 0; padding: .2rem 0; }
+.switch i {
+  width: 2.3rem; height: 1.3rem; border-radius: 999px; background: var(--frame); position: relative; flex: none;
+  transition: background .15s;
+}
+.switch i::after {
+  content: ""; position: absolute; top: .15rem; left: .15rem; width: 1rem; height: 1rem; border-radius: 50%;
+  background: var(--sheet); box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: transform .15s;
+}
+.switch[aria-checked="true"] i { background: var(--accent); }
+.switch[aria-checked="true"] i::after { transform: translateX(1rem); }
+
+.group-title { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; margin: 1.6rem 0 .7rem; }
+.group-title h2 { font-size: 1.15rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); gap: .7rem; }
+.ch {
+  text-align: left; display: grid; grid-template-columns: auto 1fr; gap: .2rem .85rem; align-items: start;
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; padding: .9rem 1rem;
+  transition: border-color .15s, transform .15s;
+}
+.ch:hover { border-color: var(--accent); transform: translateY(-1px); }
+.ch .num {
+  grid-row: span 3; font: 700 1.9rem/1 var(--f-display); color: var(--accent); min-width: 2.2ch;
+  font-variant-numeric: tabular-nums;
+}
+.ch .t { font-weight: 600; line-height: 1.3; }
+.ch .meta { font: 400 .78rem/1.4 var(--f-mono); color: var(--muted); }
+.ch .bar { height: 4px; border-radius: 99px; background: var(--frame); overflow: hidden; margin-top: .35rem; }
+.ch .bar span { display: block; height: 100%; background: var(--ok); }
+.ch.all { grid-column: 1 / -1; background: var(--accent-soft); border-color: transparent; }
+.ch.all .num { color: var(--ink); }
+
+.note { font-size: .88rem; color: var(--muted); margin-top: 2rem; }
+.note b { color: var(--ink); font-weight: 600; }
+
+/* ---------- practice ---------- */
+.qhead { display: grid; gap: .6rem; padding-block: 1.3rem .9rem; }
+.qhead .row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .8rem; }
+.qhead h2 { font-size: 1.05rem; font-family: var(--f-body); font-weight: 600; letter-spacing: 0; }
+.pos { font: 500 .85rem/1 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.tag {
+  font: 500 .72rem/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase;
+  border: 1px solid var(--rule); border-radius: 6px; padding: .3rem .45rem; color: var(--muted);
+}
+
+/* frame strip: each question is a memory frame */
+.frames { display: flex; flex-wrap: wrap; gap: 3px; }
+.frames button {
+  width: 14px; height: 14px; padding: 0; border: 0; border-radius: 3px; background: var(--frame);
+}
+.frames button.seen { background: var(--rule); }
+.frames button.ok { background: var(--ok); }
+.frames button.bad { background: var(--bad); }
+.frames button.cur { outline: 2px solid var(--ink); outline-offset: 1px; }
+.frames-wrap { display: grid; gap: .35rem; }
+.legend { display: flex; flex-wrap: wrap; gap: .3rem 1rem; font: 400 .72rem/1.3 var(--f-mono); color: var(--muted); }
+.legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: .3rem; vertical-align: -1px; }
+
+.sheet {
+  background: var(--sheet); border: 1px solid var(--rule); border-radius: 16px; box-shadow: var(--shadow);
+  padding: clamp(1.1rem, 3vw, 1.8rem); display: grid; gap: 1.1rem; min-width: 0;
+}
+.qtext { font-size: 1.06rem; line-height: 1.65; min-width: 0; overflow-wrap: anywhere; }
+.qtext pre, .sol pre {
+  font: 400 .86rem/1.5 var(--f-mono); background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 8px; padding: .7rem .85rem; overflow-x: auto; margin: .6rem 0; white-space: pre;
+}
+table.mini { border-collapse: collapse; margin: .55rem 0; font: 400 .88rem/1.4 var(--f-mono); font-variant-numeric: tabular-nums; }
+table.mini th, table.mini td { border: 1px solid var(--rule); padding: .28rem .6rem; text-align: center; }
+table.mini th { background: var(--paper); font-weight: 500; }
+.tbl { overflow-x: auto; max-width: 100%; }
+.fig { margin: 0; display: grid; gap: .35rem; }
+.fig img { display: block; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--rule); background: #fff; }
+.fig figcaption { font-size: .78rem; color: var(--muted); }
+
+.opts { display: grid; gap: .5rem; }
+.opt {
+  display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: .7rem; text-align: left;
+  border: 1.5px solid var(--rule); border-radius: 11px; background: var(--sheet); padding: .6rem .8rem;
+  transition: border-color .12s, background .12s;
+}
+.opt:hover:not([disabled]) { border-color: var(--accent); background: var(--accent-soft); }
+.opt .key {
+  width: 2rem; height: 2rem; border-radius: 8px; display: grid; place-items: center;
+  font: 600 .9rem/1 var(--f-mono); background: var(--paper); border: 1px solid var(--rule);
+}
+.opt .txt { min-width: 0; overflow-wrap: anywhere; }
+.opt .res { font: 600 .78rem/1 var(--f-mono); letter-spacing: .04em; }
+.opt[disabled] { cursor: default; }
+.opt.right { border-color: var(--ok); background: var(--ok-soft); }
+.opt.right .key { background: var(--ok); color: var(--sheet); border-color: var(--ok); }
+.opt.right .res { color: var(--ok); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt.wrong .key { background: var(--bad); color: var(--sheet); border-color: var(--bad); }
+.opt.wrong .res { color: var(--bad); }
+
+.reveal { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.btn {
+  border: 1.5px solid var(--ink); background: var(--ink); color: var(--paper);
+  border-radius: 10px; padding: .55rem 1.05rem; font-weight: 600; font-size: .95rem;
+}
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn[disabled] { opacity: .4; cursor: default; }
+
+.verdict { display: flex; align-items: center; gap: .6rem; font-weight: 600; }
+.verdict.ok { color: var(--ok); }
+.verdict.bad { color: var(--bad); }
+
+.sol { border-top: 1px dashed var(--rule); padding-top: 1.1rem; display: grid; gap: 1rem; min-width: 0; }
+.sol h3 { font: 500 .72rem/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.answer {
+  background: var(--mark); color: var(--mark-ink); border-radius: 10px; padding: .75rem .95rem;
+  overflow-wrap: anywhere; min-width: 0;
+}
+.answer pre { background: rgba(255,255,255,.55); }
+:root[data-theme="dark"] .answer pre { background: rgba(0,0,0,.25); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .answer pre { background: rgba(0,0,0,.25); } }
+.answer table.mini th { background: rgba(255,255,255,.45); }
+.expl { overflow-wrap: anywhere; min-width: 0; }
+.selfgrade { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+.selfgrade .label { margin-right: .3rem; }
+
+.where { display: grid; gap: .7rem; background: var(--paper); border-radius: 12px; padding: .9rem 1rem; }
+.where .item { display: grid; grid-template-columns: 6.5rem 1fr; gap: .2rem .8rem; align-items: baseline; }
+.where .item > .label { padding-top: .15rem; }
+.where ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .45rem; }
+.where li { min-width: 0; overflow-wrap: anywhere; }
+.where .file { display: block; font: 400 .78rem/1.4 var(--f-mono); color: var(--muted); }
+.slideref { font-weight: 600; }
+.slideref mark { background: var(--mark); color: var(--mark-ink); padding: .05rem .35rem; border-radius: 4px; font-family: var(--f-mono); font-weight: 500; }
+
+/* bottom nav */
+.navbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  background: var(--sheet); border-top: 1px solid var(--rule);
+  padding: .6rem max(16px, env(safe-area-inset-right, 0px)) calc(.6rem + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.navbar .wrap { display: flex; align-items: center; gap: .6rem; }
+.navbar .mid { flex: 1; text-align: center; font: 500 .8rem/1.3 var(--f-mono); color: var(--muted); min-width: 0; }
+.kbd { font: 500 .72rem/1 var(--f-mono); border: 1px solid var(--rule); border-bottom-width: 2px; border-radius: 4px; padding: .1rem .3rem; }
+
+/* done */
+.done { padding-block: 2rem; display: grid; gap: 1.2rem; }
+.score { font: 700 clamp(2.6rem, 9vw, 4rem)/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.missed { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.missed button { text-align: left; width: 100%; border: 1px solid var(--rule); background: var(--sheet); border-radius: 10px; padding: .55rem .8rem; }
+.missed button:hover { border-color: var(--accent); }
+
+@media (max-width: 560px) {
+  .ctl-row > .label { width: 100%; }
+  .where .item { grid-template-columns: 1fr; }
+  .brand span { display: none; }
+  .hide-sm { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <button class="brand" id="homeBtn" type="button" aria-label="Back to chapters"><b>CS222 Question Bank</b><span>Operating Systems · IMSIU</span></button>
+    <div class="spacer"></div>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Switch theme">Theme: <span id="themeLbl">system</span></button>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<nav class="navbar" id="navbar" hidden>
+  <div class="wrap">
+    <button class="btn ghost" id="prevBtn" type="button">← Prev</button>
+    <div class="mid" id="navMid"></div>
+    <button class="btn" id="nextBtn" type="button">Next →</button>
+  </div>
+</nav>
+
+<script src="questions.js"></script>
+<script>
+(function () {
+  "use strict";
+  var D = window.QDATA;
+  var app = document.getElementById("app");
+  var navbar = document.getElementById("navbar");
+  var STORE = "cs222bank.v1";
+
+  // ---------- persistence (per-viewer convenience only) ----------
+  var saved = { answers: {}, shuffle: true, types: ["mcq", "tf", "short"] };
+  try { var raw = localStorage.getItem(STORE); if (raw) saved = Object.assign(saved, JSON.parse(raw)); } catch (e) {}
+  function persist() { try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch (e) {} }
+
+  // ---------- theme ----------
+  var themes = ["system", "light", "dark"];
+  var theme = "system";
+  try { theme = localStorage.getItem(STORE + ".theme") || "system"; } catch (e) {}
+  function applyTheme() {
+    if (theme === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+    document.getElementById("themeLbl").textContent = theme;
+  }
+  applyTheme();
+  document.getElementById("themeBtn").addEventListener("click", function () {
+    theme = themes[(themes.indexOf(theme) + 1) % 3];
+    try { localStorage.setItem(STORE + ".theme", theme); } catch (e) {}
+    applyTheme();
+  });
+
+  // ---------- helpers ----------
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function chNums() { return Object.keys(D.chapters).map(Number).sort(function (a, b) { return a - b; }); }
+  function firstSlide(q) { var m = String(q.sl || "").match(/\d+/); return m ? +m[0] : 999; }
+  var TYPE_LABEL = { mcq: "Multiple choice", tf: "True / False", short: "Written" };
+  var byCh = {};
+  D.questions.forEach(function (q) { (byCh[q.ch] = byCh[q.ch] || []).push(q); });
+  var byId = {};
+  D.questions.forEach(function (q) { byId[q.id] = q; });
+
+  function shuffled(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function chTitle(n) { return n === "all" ? "All chapters" : "Chapter " + n + " · " + D.chapters[n].title; }
+
+  // ---------- state ----------
+  var S = { view: "home", chapter: null, order: [], idx: 0 };
+  var resetArmed = false;
+
+  function poolFor(ch) {
+    var list = ch === "all" ? D.questions.slice() : (byCh[ch] || []).slice();
+    list = list.filter(function (q) { return saved.types.indexOf(q.t) >= 0; });
+    list.sort(function (a, b) { return (a.ch - b.ch) || (firstSlide(a) - firstSlide(b)); });
+    return list;
+  }
+  function start(ch, ids) {
+    var list = ids ? ids.map(function (id) { return byId[id]; }) : poolFor(ch);
+    if (!list.length) return;
+    S.chapter = ch;
+    S.order = (saved.shuffle ? shuffled(list) : list).map(function (q) { return q.id; });
+    S.idx = 0;
+    S.view = "quiz";
+    render();
+  }
+
+  // ---------- home ----------
+  function answeredStats(list) {
+    var ok = 0, done = 0;
+    list.forEach(function (q) { var a = saved.answers[q.id]; if (a && a.done) { done++; if (a.ok) ok++; } });
+    return { ok: ok, done: done };
+  }
+  function renderHome() {
+    navbar.hidden = true;
+    var total = D.questions.length;
+    var exams = Object.keys(D.sources).length;
+    var refs = D.questions.reduce(function (n, q) { return n + q.from.length; }, 0);
+    var st = answeredStats(D.questions);
+    var h = '<section class="hero"><span class="label">Exam questions sorted by lecture chapter</span>' +
+      '<h1>Practice every past OS exam question, chapter by chapter.</h1>' +
+      '<p>Each question is solved and explained, with the exam it came from and the lecture slide it is based on. Pick a chapter, answer one question at a time, and use Next to move on.</p>' +
+      '<div class="stats"><span><b>' + total + '</b> unique questions</span><span><b>' + refs + '</b> appearances across <b>' + exams + '</b> exams &amp; quizzes</span><span><b>' + st.done + '</b> answered · <b>' + st.ok + '</b> correct</span></div></section>';
+
+    h += '<section class="controls" aria-label="Practice settings">' +
+      '<div class="ctl-row"><span class="label">Order</span>' +
+      '<button type="button" class="switch" id="shuffleSw" role="switch" aria-checked="' + (saved.shuffle ? "true" : "false") + '"><i></i>Shuffle questions</button></div>' +
+      '<div class="ctl-row"><span class="label">Question types</span>' +
+      ["mcq", "tf", "short"].map(function (t) {
+        return '<button type="button" class="chip" data-type="' + t + '" aria-pressed="' + (saved.types.indexOf(t) >= 0) + '">' + TYPE_LABEL[t] + '</button>';
+      }).join("") + '</div>' +
+      '<div class="ctl-row"><span class="label">Progress</span>' +
+      (st.done
+        ? (resetArmed
+          ? '<span style="font-size:.9rem">Clear all ' + st.done + ' saved answers?</span><button type="button" class="chip" id="resetYes">Yes, reset</button><button type="button" class="chip" id="resetNo">Cancel</button>'
+          : '<button type="button" class="chip" id="resetBtn">Reset my answers</button>')
+        : '<span style="font-size:.9rem;color:var(--muted)">No answers saved yet</span>') +
+      '</div></section>';
+
+    var main = chNums().filter(function (n) { return D.chapters[n].deck && byCh[n]; });
+    var extra = chNums().filter(function (n) { return !D.chapters[n].deck && byCh[n]; });
+
+    h += '<div class="group-title"><h2>Lecture chapters</h2><span class="label">' + main.length + ' decks</span></div><div class="grid">';
+    h += chapterCard("all");
+    main.forEach(function (n) { h += chapterCard(n); });
+    h += '</div>';
+    if (extra.length) {
+      h += '<div class="group-title"><h2>Topics outside your slides</h2><span class="label">textbook chapters</span></div>' +
+        '<p class="note" style="margin-top:0">Older exams asked about these textbook chapters, which have no deck in your Lectures folder.</p><div class="grid">';
+      extra.forEach(function (n) { h += chapterCard(n); });
+      h += '</div>';
+    }
+    h += '<p class="note"><b>Keys:</b> <span class="kbd">←</span> <span class="kbd">→</span> move between questions, <span class="kbd">1</span>–<span class="kbd">6</span> pick an option, <span class="kbd">Enter</span> shows the solution. Your answers are remembered in this browser only.</p>';
+    app.innerHTML = h;
+
+    document.getElementById("shuffleSw").addEventListener("click", function () {
+      saved.shuffle = !saved.shuffle; persist(); renderHome();
+    });
+    var rb = document.getElementById("resetBtn");
+    if (rb) rb.addEventListener("click", function () { resetArmed = true; renderHome(); });
+    var ry = document.getElementById("resetYes");
+    if (ry) ry.addEventListener("click", function () { saved.answers = {}; resetArmed = false; persist(); renderHome(); });
+    var rn = document.getElementById("resetNo");
+    if (rn) rn.addEventListener("click", function () { resetArmed = false; renderHome(); });
+    app.querySelectorAll("[data-type]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var t = b.getAttribute("data-type"), i = saved.types.indexOf(t);
+        if (i >= 0) { if (saved.types.length > 1) saved.types.splice(i, 1); } else saved.types.push(t);
+        persist(); renderHome();
+      });
+    });
+    app.querySelectorAll("[data-ch]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-ch"); start(v === "all" ? "all" : +v);
+      });
+    });
+  }
+  function chapterCard(n) {
+    var list = poolFor(n);
+    var all = n === "all" ? D.questions : byCh[n];
+    var st = answeredStats(all);
+    var pct = all.length ? Math.round(100 * st.done / all.length) : 0;
+    var meta, title, num;
+    if (n === "all") { num = "∗"; title = "All chapters mixed"; meta = list.length + " questions · good for a full mock exam"; }
+    else {
+      var c = D.chapters[n];
+      num = n; title = c.title;
+      meta = list.length + " question" + (list.length === 1 ? "" : "s") + (c.deck ? " · " + c.slides + " slides" : " · no slides");
+    }
+    return '<button type="button" class="ch' + (n === "all" ? " all" : "") + '" data-ch="' + n + '"' + (list.length ? "" : " disabled") + '>' +
+      '<span class="num">' + num + '</span><span class="t">' + esc(title) + '</span>' +
+      '<span class="meta">' + esc(meta) + (st.done ? " · " + st.done + " done" : "") + '</span>' +
+      '<span class="bar" aria-hidden="true"><span style="width:' + pct + '%"></span></span></button>';
+  }
+
+  // ---------- question ----------
+  function optionsOf(q) { return q.t === "tf" ? (q.o || ["True", "False"]) : q.o; }
+  function renderQuiz() {
+    var id = S.order[S.idx], q = byId[id], rec = saved.answers[id] || {};
+    var n = S.order.length;
+    navbar.hidden = false;
+    var h = '<section class="qhead"><div class="row"><span class="pos">' + (S.idx + 1) + ' / ' + n + '</span>' +
+      '<h2>' + esc(chTitle(q.ch)) + '</h2></div>' +
+      '<div class="row"><span class="tag">' + TYPE_LABEL[q.t] + '</span>' + (q.tp ? '<span class="tag">' + esc(q.tp) + '</span>' : '') + '</div>' +
+      '<div class="frames-wrap"><div class="frames" role="list" aria-label="Questions in this set">' +
+      S.order.map(function (qid, i) {
+        var r = saved.answers[qid], cls = [];
+        if (r && r.done) cls.push(r.ok ? "ok" : (r.ok === false ? "bad" : "seen"));
+        if (i === S.idx) cls.push("cur");
+        return '<button type="button" role="listitem" class="' + cls.join(" ") + '" data-jump="' + i + '" aria-label="Question ' + (i + 1) + '"></button>';
+      }).join("") + '</div><div class="legend"><span><i style="background:var(--ok)"></i>correct</span><span><i style="background:var(--bad)"></i>missed</span><span><i style="background:var(--rule)"></i>viewed</span><span><i style="background:var(--frame)"></i>not yet</span></div></div></section>';
+
+    h += '<article class="sheet" aria-live="polite"><div class="qtext">' + wrapTables(q.q) + '</div>';
+    if (q.img) h += '<figure class="fig"><img src="img/' + esc(q.img) + '" alt="Figure from the original exam paper" loading="lazy"><figcaption>Figure from the exam paper</figcaption></figure>';
+
+    var revealed = !!rec.done;
+    if (q.t === "mcq" || q.t === "tf") {
+      var opts = optionsOf(q);
+      h += '<div class="opts" role="group" aria-label="Answer options">' + opts.map(function (o, i) {
+        var cls = "opt", res = "";
+        if (revealed) {
+          if (i === q.a) { cls += " right"; res = "ANSWER"; }
+          else if (i === rec.choice) { cls += " wrong"; res = "YOUR PICK"; }
+        }
+        return '<button type="button" class="' + cls + '" data-opt="' + i + '"' + (revealed ? " disabled" : "") + '>' +
+          '<span class="key">' + (q.t === "tf" ? (i === 0 ? "T" : "F") : String.fromCharCode(65 + i)) + '</span>' +
+          '<span class="txt">' + esc(o) + '</span><span class="res">' + res + '</span></button>';
+      }).join("") + '</div>';
+      if (revealed) {
+        h += rec.ok ? '<div class="verdict ok">✓ Correct</div>' : '<div class="verdict bad">✗ Not quite — the answer is ' + (q.t === "tf" ? esc(opts[q.a]) : String.fromCharCode(65 + q.a)) + '</div>';
+      } else {
+        h += '<div class="reveal"><button type="button" class="btn ghost" id="showSol">Show solution</button></div>';
+      }
+    } else if (!revealed) {
+      h += '<div class="reveal"><button type="button" class="btn accent" id="showSol">Show solution</button><span class="label">Work it out first, then compare</span></div>';
+    }
+
+    if (revealed) h += solution(q, rec);
+    h += '</article>';
+    app.innerHTML = h;
+
+    // wire
+    app.querySelectorAll("[data-opt]").forEach(function (b) {
+      b.addEventListener("click", function () { choose(+b.getAttribute("data-opt")); });
+    });
+    var ss = document.getElementById("showSol");
+    if (ss) ss.addEventListener("click", reveal);
+    app.querySelectorAll("[data-grade]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var r = saved.answers[id] || {}; r.done = true; r.ok = b.getAttribute("data-grade") === "1";
+        saved.answers[id] = r; persist(); renderQuiz();
+      });
+    });
+    app.querySelectorAll("[data-jump]").forEach(function (b) {
+      b.addEventListener("click", function () { S.idx = +b.getAttribute("data-jump"); render(); });
+    });
+
+    document.getElementById("prevBtn").disabled = S.idx === 0;
+    document.getElementById("nextBtn").textContent = S.idx === n - 1 ? "Finish →" : "Next →";
+    var st = answeredStats(S.order.map(function (x) { return byId[x]; }));
+    document.getElementById("navMid").innerHTML = '<span class="hide-sm">' + st.done + ' answered · </span>' + st.ok + ' correct';
+  }
+  function wrapTables(html) { return html.replace(/<table class="mini">/g, '<div class="tbl"><table class="mini">').replace(/<\/table>/g, "</table></div>"); }
+
+  function solution(q, rec) {
+    var h = '<section class="sol" aria-label="Solution">';
+    if (q.t === "short") {
+      h += '<div><h3>Answer</h3><div class="answer">' + wrapTables(q.a) + '</div></div>';
+    } else {
+      var opts = optionsOf(q);
+      h += '<div><h3>Answer</h3><div class="answer"><b>' + (q.t === "tf" ? "" : String.fromCharCode(65 + q.a) + ". ") + esc(opts[q.a]) + '</b></div></div>';
+    }
+    h += '<div><h3>How it is solved</h3><div class="expl">' + wrapTables(q.e) + '</div></div>';
+    if (q.aimg) h += '<figure class="fig"><img src="img/' + esc(q.aimg) + '" alt="Worked answer drawing" loading="lazy"><figcaption>Answer figure from the exam key or a solved copy</figcaption></figure>';
+    if (q.t === "short") {
+      var g = rec.ok === true ? "1" : rec.ok === false ? "0" : "";
+      h += '<div class="selfgrade"><span class="label">Did you get it?</span>' +
+        '<button type="button" class="btn ' + (g === "1" ? "accent" : "ghost") + '" data-grade="1">Yes, I got it</button>' +
+        '<button type="button" class="btn ' + (g === "0" ? "" : "ghost") + '" data-grade="0">No, review later</button></div>';
+    }
+    // where it came from
+    var c = D.chapters[q.ch];
+    var lect = c.deck
+      ? (q.sl ? '<span class="slideref">Chapter ' + q.ch + ' — ' + esc(c.title) + ', ' + (/^\d+$/.test(String(q.sl)) ? 'slide' : 'slides') + ' <mark>' + esc(q.sl) + '</mark></span><span class="file">Lectures/' + esc(c.deck) + '</span>' : '<span class="slideref">Chapter ' + q.ch + ' — ' + esc(c.title) + '</span>')
+      : '<span class="slideref">Textbook Chapter ' + q.ch + ' — ' + esc(c.title) + '</span><span class="file">No deck for this chapter in your Lectures folder</span>';
+    if (q.nb) lect += '<span class="file">' + esc(q.nb) + '</span>';
+    h += '<div class="where"><div class="item"><span class="label">Lecture</span><div>' + lect + '</div></div>' +
+      '<div class="item"><span class="label">Exam source' + (q.from.length > 1 ? "s" : "") + '</span><ul>' +
+      q.from.map(function (f) {
+        var s = D.sources[f.s];
+        return '<li><b>' + esc(s.label) + '</b> — ' + esc(f.qn) + '<span class="file">' + esc(s.file) + (f.pg ? ' · PDF page ' + f.pg : '') + '</span></li>';
+      }).join("") + '</ul></div></div>';
+    h += '</section>';
+    return h;
+  }
+
+  function choose(i) {
+    var id = S.order[S.idx], q = byId[id];
+    if (!(q.t === "mcq" || q.t === "tf")) return;
+    var r = saved.answers[id];
+    if (r && r.done) return;
+    saved.answers[id] = { done: true, choice: i, ok: i === q.a };
+    persist(); renderQuiz();
+  }
+  function reveal() {
+    var id = S.order[S.idx], q = byId[id];
+    var r = saved.answers[id] || {};
+    if (r.done) return;
+    if (q.t === "short") { r.done = true; r.ok = null; }
+    else { r.done = true; r.choice = -1; r.ok = false; }
+    saved.answers[id] = r; persist(); renderQuiz();
+  }
+
+  // ---------- done ----------
+  function renderDone() {
+    navbar.hidden = true;
+    var list = S.order.map(function (x) { return byId[x]; });
+    var st = answeredStats(list);
+    var missed = [];
+    S.order.forEach(function (id, i) { var r = saved.answers[id]; if (!r || !r.done || r.ok !== true) missed.push(i); });
+    var h = '<section class="done"><span class="label">' + esc(chTitle(S.chapter)) + '</span>' +
+      '<div class="score">' + st.ok + ' / ' + list.length + '</div>' +
+      '<p style="margin:0;color:var(--muted)">' + st.done + ' of ' + list.length + ' questions answered. Written questions count as correct when you mark them “I got it”.</p>' +
+      '<div class="reveal">' +
+      (missed.length ? '<button type="button" class="btn accent" id="retryMissed">Retry the ' + missed.length + ' not marked correct</button>' : '') +
+      '<button type="button" class="btn" id="again">Reshuffle this set</button>' +
+      '<button type="button" class="btn ghost" id="back">All chapters</button></div>';
+    if (missed.length) {
+      h += '<div><h3 class="label" style="margin:.4rem 0 .6rem">Jump back to</h3><ul class="missed">' + missed.slice(0, 60).map(function (i) {
+        var q = byId[S.order[i]];
+        return '<li><button type="button" data-jump="' + i + '"><span class="pos">' + (i + 1) + '.</span> ' + esc(q.tp || TYPE_LABEL[q.t]) + ' <span class="label">· ' + esc(D.sources[q.from[0].s].label) + '</span></button></li>';
+      }).join("") + '</ul></div>';
+    }
+    h += '</section>';
+    app.innerHTML = h;
+    var rm = document.getElementById("retryMissed");
+    if (rm) rm.addEventListener("click", function () {
+      var ids = missed.map(function (i) { return S.order[i]; });
+      ids.forEach(function (id) { delete saved.answers[id]; }); persist();
+      start(S.chapter, ids);
+    });
+    document.getElementById("again").addEventListener("click", function () {
+      S.order.forEach(function (id) { delete saved.answers[id]; }); persist();
+      start(S.chapter);
+    });
+    document.getElementById("back").addEventListener("click", goHome);
+    app.querySelectorAll("[data-jump]").forEach(function (b) {
+      b.addEventListener("click", function () { S.idx = +b.getAttribute("data-jump"); S.view = "quiz"; render(); });
+    });
+  }
+
+  function render() {
+    if (S.view === "home") renderHome();
+    else if (S.view === "quiz") renderQuiz();
+    else renderDone();
+    window.scrollTo(0, 0);
+  }
+  function goHome() { S.view = "home"; render(); }
+
+  document.getElementById("homeBtn").addEventListener("click", goHome);
+  document.getElementById("prevBtn").addEventListener("click", function () { if (S.idx > 0) { S.idx--; render(); } });
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    if (S.idx < S.order.length - 1) { S.idx++; render(); } else { S.view = "done"; render(); }
+  });
+  document.addEventListener("keydown", function (ev) {
+    if (S.view !== "quiz" || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    var tag = (ev.target && ev.target.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (ev.key === "ArrowRight") { document.getElementById("nextBtn").click(); ev.preventDefault(); }
+    else if (ev.key === "ArrowLeft") { if (S.idx > 0) { S.idx--; render(); } ev.preventDefault(); }
+    else if (/^[1-6]$/.test(ev.key)) { var q = byId[S.order[S.idx]]; var o = optionsOf(q); if (o && +ev.key <= o.length) choose(+ev.key - 1); }
+    else if (ev.key === "Enter" && !(tag === "BUTTON")) { reveal(); }
+  });
+
+  render();
+})();
+</script>
