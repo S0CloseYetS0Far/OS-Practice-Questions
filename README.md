@@ -6,6 +6,7 @@ An interactive question bank built from past CS222 (Operating Systems) exams, mi
 
 - **740 unique questions**, sorted by lecture chapter (Ch 1, 3, 4, 5, 6, 7, 8, 9, 10, 13, plus textbook topics outside the slides).
 - Every question is **solved and explained**, and shows the **exam it came from** and the **lecture slide** it is based on.
+- Questions in each chapter run **from the newest exam to the oldest**.
 - One question per page with **Prev / Next**, a **shuffle** option, a question‑type filter, and progress saved in your browser.
 
 ## How to use
@@ -37,6 +38,7 @@ Keyboard: `←` `→` move between questions, `1`–`6` choose an option, `Enter
 
 - **740 سؤالًا** بدون تكرار، مرتبة حسب فصول المحاضرات (الفصول 1، 3، 4، 5، 6، 7، 8، 9، 10، 13، إضافة إلى مواضيع من الكتاب غير موجودة في الشرائح).
 - كل سؤال **محلول مع شرح لطريقة الحل**، ويوضح **الاختبار الذي جاء منه** و**رقم الشريحة** في المحاضرة.
+- الأسئلة في كل فصل مرتبة **من أحدث اختبار إلى الأقدم**.
 - سؤال واحد في كل صفحة مع زر **التالي / السابق**، وخيار **خلط الأسئلة**، وتصفية حسب نوع السؤال، وحفظ تقدمك في المتصفح.
 
 ### طريقة الاستخدام

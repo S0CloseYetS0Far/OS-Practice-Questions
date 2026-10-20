@@ -284,7 +284,7 @@ table.mini th { background: var(--paper); font-weight: 500; }
   var STORE = "cs222bank.v1";
 
   // ---------- persistence (per-viewer convenience only) ----------
-  var saved = { answers: {}, shuffle: true, types: ["mcq", "tf", "short"] };
+  var saved = { answers: {}, shuffle: false, types: ["mcq", "tf", "short"] };
   try { var raw = localStorage.getItem(STORE); if (raw) saved = Object.assign(saved, JSON.parse(raw)); } catch (e) {}
   function persist() { try { localStorage.setItem(STORE, JSON.stringify(saved)); } catch (e) {} }
 
@@ -307,7 +307,6 @@ table.mini th { background: var(--paper); font-weight: 500; }
   // ---------- helpers ----------
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function chNums() { return Object.keys(D.chapters).map(Number).sort(function (a, b) { return a - b; }); }
-  function firstSlide(q) { var m = String(q.sl || "").match(/\d+/); return m ? +m[0] : 999; }
   var TYPE_LABEL = { mcq: "Multiple choice", tf: "True / False", short: "Written" };
   var byCh = {};
   D.questions.forEach(function (q) { (byCh[q.ch] = byCh[q.ch] || []).push(q); });
@@ -328,7 +327,6 @@ table.mini th { background: var(--paper); font-weight: 500; }
   function poolFor(ch) {
     var list = ch === "all" ? D.questions.slice() : (byCh[ch] || []).slice();
     list = list.filter(function (q) { return saved.types.indexOf(q.t) >= 0; });
-    list.sort(function (a, b) { return (a.ch - b.ch) || (firstSlide(a) - firstSlide(b)); });
     return list;
   }
   function start(ch, ids) {
@@ -360,7 +358,7 @@ table.mini th { background: var(--paper); font-weight: 500; }
 
     h += '<section class="controls" aria-label="Practice settings">' +
       '<div class="ctl-row"><span class="label">Order</span>' +
-      '<button type="button" class="switch" id="shuffleSw" role="switch" aria-checked="' + (saved.shuffle ? "true" : "false") + '"><i></i>Shuffle questions</button></div>' +
+      '<button type="button" class="switch" id="shuffleSw" role="switch" aria-checked="' + (saved.shuffle ? "true" : "false") + '"><i></i>Shuffle questions</button><span class="label">' + (saved.shuffle ? 'random order' : 'newest exam first') + '</span></div>' +
       '<div class="ctl-row"><span class="label">Question types</span>' +
       ["mcq", "tf", "short"].map(function (t) {
         return '<button type="button" class="chip" data-type="' + t + '" aria-pressed="' + (saved.types.indexOf(t) >= 0) + '">' + TYPE_LABEL[t] + '</button>';
