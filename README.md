@@ -2,7 +2,7 @@
 
 **English** · [العربية](#العربية)
 
-An interactive question bank built from past CS222 (Operating Systems) exams, midterms and quizzes at Imam Mohammad Ibn Saud Islamic University.
+An interactive question bank built from past CS222 (Operating Systems) exams, midterms and quizzes.
 
 - **740 unique questions**, sorted by lecture chapter (Ch 1, 3, 4, 5, 6, 7, 8, 9, 10, 13, plus textbook topics outside the slides).
 - Every question is **solved and explained**, and shows the **exam it came from** and the **lecture slide** it is based on.
@@ -34,7 +34,7 @@ Keyboard: `←` `→` move between questions, `1`–`6` choose an option, `Enter
 
 ## العربية
 
-بنك أسئلة تفاعلي لمقرر **CS222 نظم التشغيل** مبني من اختبارات النهائي والميدترم والكويزات السابقة في جامعة الإمام محمد بن سعود الإسلامية.
+بنك أسئلة تفاعلي لمقرر **CS222 نظم التشغيل** مبني من اختبارات النهائي والميدترم والكويزات السابقة.
 
 - **740 سؤالًا** بدون تكرار، مرتبة حسب فصول المحاضرات (الفصول 1، 3، 4، 5، 6، 7، 8، 9، 10، 13، إضافة إلى مواضيع من الكتاب غير موجودة في الشرائح).
 - كل سؤال **محلول مع شرح لطريقة الحل**، ويوضح **الاختبار الذي جاء منه** و**رقم الشريحة** في المحاضرة.
